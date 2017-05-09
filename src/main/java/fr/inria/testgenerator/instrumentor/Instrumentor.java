@@ -1,5 +1,6 @@
 package fr.inria.testgenerator.instrumentor;
 
+import spoon.Launcher;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtField;
@@ -59,4 +60,23 @@ public class Instrumentor {
 
         clazz.addField(fitnessField);
     }
+
+    public static void main(String[] args) {
+        Launcher launcher = new Launcher();
+        launcher.getEnvironment().setAutoImports(false);
+        launcher.getEnvironment().setCommentEnabled(true);
+
+        launcher.addInputResource("docs/BinarySearch.java");
+        launcher.buildModel();
+
+        final CtClass<Object> originalClass = launcher.getFactory().Class().get("eu.fbk.se.tcgen2.BinarySearch");
+        final CtClass<?> clazz = originalClass.clone();
+        clazz.setSimpleName(clazz.getSimpleName() + "_INSTR_43");
+        originalClass.getPackage().addType(clazz);
+        insertFitnessField(clazz);
+        insertFitnessAssignement(43, clazz.getMethodsByName("search").get(0));//TODO we could parametized this, but w/e
+
+        launcher.prettyprint();
+    }
+
 }
