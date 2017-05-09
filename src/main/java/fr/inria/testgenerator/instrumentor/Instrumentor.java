@@ -1,7 +1,10 @@
-package fr.inria.testgenerator;
+package fr.inria.testgenerator.instrumentor;
 
 import spoon.reflect.code.*;
+import spoon.reflect.declaration.CtClass;
+import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.ModifierKind;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
  * benjamin.danglot@inria.fr
  * on 08/05/17
  */
-public class FitnessAssignmentInjector {
+public class Instrumentor {
 
     /*
         The target class should have been processed by FitnessInsertion
@@ -44,4 +47,16 @@ public class FitnessAssignmentInjector {
         );
     }
 
+    public static void insertFitnessField(CtClass<?> clazz) {
+        final CtField<Integer> fitnessField = clazz.getFactory().createField();
+        fitnessField.setSimpleName("fitness");
+        fitnessField.addModifier(ModifierKind.PUBLIC);
+        fitnessField.addModifier(ModifierKind.STATIC);
+        fitnessField.setType(clazz.getFactory().Type().INTEGER_PRIMITIVE);
+
+        final CtFieldRead<Integer> fieldRead = clazz.getFactory().createFieldRead();
+        fieldRead.setType(clazz.getFactory().Type().createReference(Integer.class));
+
+        clazz.addField(fitnessField);
+    }
 }
