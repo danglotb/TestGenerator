@@ -1,7 +1,10 @@
 package fr.inria.testgenerator;
 
 import org.junit.Test;
+import spoon.Launcher;
+import spoon.reflect.declaration.CtClass;
 
+import static fr.inria.testgenerator.FitnessInsertion.insertFitnessField;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -13,8 +16,17 @@ public class TestFitnessInsertion {
 
     @Test
     public void testOnBinarySearch() throws Exception {
-        assertEquals(expectedClass, FitnessInsertion.run("eu.fbk.se.tcgen2.BinarySearch",
-                "src/main/java/eu/fbk/se/tcgen2/BinarySearch.java").toString());
+        Launcher launcher = new Launcher();
+        launcher.getEnvironment().setAutoImports(true);
+        launcher.getEnvironment().setCommentEnabled(true);
+
+        launcher.addInputResource("src/main/java/eu/fbk/se/tcgen2/BinarySearch.java");
+        launcher.buildModel();
+
+        final CtClass<Object> clazz = launcher.getFactory().Class().get("BinarySearch");
+        insertFitnessField(clazz);
+
+        assertEquals(expectedClass, clazz.toString());
     }
 
     private static final String expectedClass = "public class BinarySearch {\n" +
@@ -78,6 +90,6 @@ public class TestFitnessInsertion {
             "        \n" +
             "    }\n" +
             "\n" +
-            "    public static int fitness;\n" +
+            "    public static int fitness = Integer.MAX_VALUE;\n" +
             "}";
 }

@@ -12,7 +12,7 @@ public class BinarySearch_INSTR_43 {
         
         java.lang.System.out.print("Enter value to find: ");
         search = in.nextInt();
-        int middle = eu.fbk.se.tcgen2.BinarySearch.search(array, search);
+        int middle = BinarySearch.search(array, search);
         if (middle >= 0) {
             java.lang.System.out.println((((search + " found at location ") + (middle + 1)) + "."));
         }else

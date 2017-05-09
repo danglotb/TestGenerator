@@ -1,8 +1,6 @@
 package fr.inria.testgenerator;
 
-import spoon.reflect.code.CtBlock;
-import spoon.reflect.code.CtCodeSnippetStatement;
-import spoon.reflect.code.CtStatement;
+import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.visitor.filter.TypeFilter;
 
@@ -37,13 +35,12 @@ public class FitnessAssignmentInjector {
         final List<CtBlock> blocks = method.getElements(new TypeFilter<>(CtBlock.class));
         final int indexTargetBlock = blocks.indexOf(targetBlock);
 
-        blocks.forEach(ctBlock -> {
-                    int approachLevel = Math.abs(indexTargetBlock - blocks.indexOf(ctBlock));
-                    final CtCodeSnippetStatement snippet = ctBlock.getFactory().createCodeSnippetStatement(
-                            "fitness = Math.min(" + "fitness" + "," + approachLevel + ")"
-                    );
-                    ctBlock.insertBegin(snippet);
-                }
+        blocks.forEach(ctBlock ->
+                ctBlock.insertBegin(
+                        method.getParent().getFactory().createCodeSnippetStatement(
+                                "fitness = Math.min(fitness, " + Math.abs(indexTargetBlock - blocks.indexOf(ctBlock)) + ")"
+                        )
+                )
         );
     }
 
