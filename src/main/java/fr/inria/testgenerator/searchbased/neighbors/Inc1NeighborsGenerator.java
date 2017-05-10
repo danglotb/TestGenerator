@@ -1,6 +1,6 @@
 package fr.inria.testgenerator.searchbased.neighbors;
 
-import fr.inria.testgenerator.searchbased.Helper;
+import fr.inria.testgenerator.searchbased.support.Helper;
 
 /**
  * Created by Benjamin DANGLOT

@@ -72,6 +72,10 @@ public class BinarySearch {
         
     }
 
+    public static void reset() {
+        fitness = Integer.MAX_VALUE;
+    }
+
     public static int fitness;
 }
 

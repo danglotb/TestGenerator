@@ -136,6 +136,10 @@ public class TestInstrumentor {
             "    }\n" +
             "\n" +
             "    public static int fitness;\n" +
+            "\n" +
+            "    public static void reset() {\n" +
+            "        fitness = Integer.MAX_VALUE;\n" +
+            "    }\n" +
             "}\n";
 
     private static final String expectedClass = "public class BinarySearch {\n" +
@@ -200,6 +204,10 @@ public class TestInstrumentor {
             "    }\n" +
             "\n" +
             "    public static int fitness;\n" +
+            "\n" +
+            "    public static void reset() {\n" +
+            "        fitness = Integer.MAX_VALUE;\n" +
+            "    }\n" +
             "}";
 
     private static String expectedBody = "{\n" +

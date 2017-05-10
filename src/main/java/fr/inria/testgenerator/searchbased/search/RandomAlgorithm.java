@@ -1,32 +1,34 @@
 package fr.inria.testgenerator.searchbased.search;
 
-import fr.inria.testgenerator.searchbased.Helper;
-import fr.inria.testgenerator.searchbased.Results;
+import fr.inria.testgenerator.searchbased.support.Helper;
+import fr.inria.testgenerator.searchbased.support.Results;
 
 import java.util.Random;
+import java.util.function.Function;
 
-import static fr.inria.testgenerator.searchbased.Helper.BUDGET;
-import static fr.inria.testgenerator.searchbased.Helper.current_budget;
+import static fr.inria.testgenerator.searchbased.support.Helper.BUDGET;
+import static fr.inria.testgenerator.searchbased.support.Helper.current_budget;
 
 /**
  * Created by Benjamin DANGLOT
  * benjamin.danglot@inria.fr
  * on 09/05/17
  */
-public class RandomAlgorithm implements Algorithm {
+public class RandomAlgorithm extends Algorithm {
 
     private Random random;
 
-    public RandomAlgorithm(int seed)  {
+    public RandomAlgorithm(Function<int[], Integer> run, int seed)  {
+        super(run);
         this.random = new Random(seed);
     }
 
     public Results run() {
         int[] currentSolution = Helper.initRandomSolution();
-        int currentFitness = Helper.run(currentSolution);
+        int currentFitness = run.apply(currentSolution);
         while (Helper.current_budget > 0 && currentFitness != 0) {
             int[] tmpSolution = next();
-            int tmpFitness = Helper.run(currentSolution);
+            int tmpFitness = run.apply(currentSolution);
             if (tmpFitness < currentFitness) {
                 System.arraycopy(currentSolution, 0, tmpSolution, 0, 6);
                 currentFitness = tmpFitness;

@@ -53,6 +53,16 @@ public class Instrumentor {
         fieldRead.setType(clazz.getFactory().Type().createReference(Integer.class));
 
         clazz.addField(fitnessField);
+
+        final CtMethod<Void> reset = clazz.getFactory().createMethod();
+        reset.setSimpleName("reset");
+        reset.addModifier(ModifierKind.PUBLIC);
+        reset.addModifier(ModifierKind.STATIC);
+        reset.setType(clazz.getFactory().Type().VOID_PRIMITIVE);
+        reset.setBody(
+                clazz.getFactory().createCodeSnippetStatement("fitness = Integer.MAX_VALUE")
+        );
+        clazz.addMethod(reset);
     }
 
     public static void main(String[] args) {
