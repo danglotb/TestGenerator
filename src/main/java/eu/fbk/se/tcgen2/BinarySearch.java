@@ -1,6 +1,9 @@
+
+
 package eu.fbk.se.tcgen2;
 
-public class BinarySearch_INSTR_43 {
+
+public class BinarySearch {
     public static void main(java.lang.String[] args) {
         int c;
         int search;
@@ -12,7 +15,7 @@ public class BinarySearch_INSTR_43 {
         
         java.lang.System.out.print("Enter value to find: ");
         search = in.nextInt();
-        int middle = BinarySearch.search(array, search);
+        int middle = eu.fbk.se.tcgen2.BinarySearch.search(array, search);
         if (middle >= 0) {
             java.lang.System.out.println((((search + " found at location ") + (middle + 1)) + "."));
         }else
@@ -42,8 +45,10 @@ public class BinarySearch_INSTR_43 {
                         sorted = true;
                         while (first <= last) {
                             fitness = Math.min(fitness, 2);
+                            // element found at index middle
                             if ((array[middle]) < search)
                                 first = middle + 1;
+                            // element found at index middle
                             else {
                                 fitness = Math.min(fitness, 1);
                                 if ((array[middle]) == search) {
@@ -61,9 +66,12 @@ public class BinarySearch_INSTR_43 {
         }
         if (!sorted)
             return -2;
+        // array not sorted
         
-        return -1;
+        return -1;// element not found
+        
     }
 
     public static int fitness;
 }
+

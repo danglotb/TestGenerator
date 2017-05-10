@@ -54,7 +54,7 @@ public class TestInstrumentor {
     @Test
     public void testMain() throws Exception {
         Instrumentor.main(new String[]{});
-        try (BufferedReader buffer = new BufferedReader(new FileReader("spooned/eu/fbk/se/tcgen2/BinarySearch_INSTR_43.java"))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader("spooned/eu/fbk/se/tcgen2/BinarySearch.java"))) {
             assertEquals(expectedInstrumentedClass, buffer.lines().collect(Collectors.joining("\n")));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -66,7 +66,7 @@ public class TestInstrumentor {
             "package eu.fbk.se.tcgen2;\n" +
             "\n" +
             "\n" +
-            "public class BinarySearch_INSTR_43 {\n" +
+            "public class BinarySearch {\n" +
             "    public static void main(java.lang.String[] args) {\n" +
             "        int c;\n" +
             "        int search;\n" +
@@ -92,36 +92,34 @@ public class TestInstrumentor {
             "    }\n" +
             "\n" +
             "    public static int search(int[] array, int search) {\n" +
-            "        fitness = Math.min(fitness, 8);\n" +
+            "        fitness = Math.min(fitness, 7);\n" +
             "        int first = 0;\n" +
             "        int last = (array.length) - 1;\n" +
             "        int middle = (first + last) / 2;\n" +
             "        boolean sorted = false;\n" +
             "        if ((array[0]) <= (array[1])) {\n" +
-            "            fitness = Math.min(fitness, 7);\n" +
+            "            fitness = Math.min(fitness, 6);\n" +
             "            if ((array[1]) <= (array[2])) {\n" +
-            "                fitness = Math.min(fitness, 6);\n" +
+            "                fitness = Math.min(fitness, 5);\n" +
             "                if ((array[2]) <= (array[3])) {\n" +
-            "                    fitness = Math.min(fitness, 5);\n" +
+            "                    fitness = Math.min(fitness, 4);\n" +
             "                    if ((array[3]) <= (array[4])) {\n" +
-            "                        fitness = Math.min(fitness, 4);\n" +
+            "                        fitness = Math.min(fitness, 3);\n" +
             "                        sorted = true;\n" +
             "                        while (first <= last) {\n" +
-            "                            fitness = Math.min(fitness, 3);\n" +
+            "                            fitness = Math.min(fitness, 2);\n" +
             "                            // element found at index middle\n" +
-            "                            if ((array[middle]) < search) {\n" +
-            "                                fitness = Math.min(fitness, 2);\n" +
+            "                            if ((array[middle]) < search)\n" +
             "                                first = middle + 1;\n" +
-            "                            }// element found at index middle\n" +
+            "                            // element found at index middle\n" +
             "                            else {\n" +
             "                                fitness = Math.min(fitness, 1);\n" +
             "                                if ((array[middle]) == search) {\n" +
             "                                    fitness = Math.min(fitness, 0);\n" +
             "                                    return middle;\n" +
-            "                                }else {\n" +
-            "                                    fitness = Math.min(fitness, 1);\n" +
+            "                                }else\n" +
             "                                    last = middle - 1;\n" +
-            "                                }\n" +
+            "                                \n" +
             "                            }\n" +
             "                            middle = (first + last) / 2;\n" +
             "                        } \n" +
@@ -129,10 +127,9 @@ public class TestInstrumentor {
             "                }\n" +
             "            }\n" +
             "        }\n" +
-            "        if (!sorted) {\n" +
-            "            fitness = Math.min(fitness, 2);\n" +
+            "        if (!sorted)\n" +
             "            return -2;\n" +
-            "        }// array not sorted\n" +
+            "        // array not sorted\n" +
             "        \n" +
             "        return -1;// element not found\n" +
             "        \n" +
@@ -206,36 +203,34 @@ public class TestInstrumentor {
             "}";
 
     private static String expectedBody = "{\n" +
-            "    fitness = Math.min(fitness, 8);\n" +
+            "    fitness = Math.min(fitness, 7);\n" +
             "    int first = 0;\n" +
             "    int last = (array.length) - 1;\n" +
             "    int middle = (first + last) / 2;\n" +
             "    boolean sorted = false;\n" +
             "    if ((array[0]) <= (array[1])) {\n" +
-            "        fitness = Math.min(fitness, 7);\n" +
+            "        fitness = Math.min(fitness, 6);\n" +
             "        if ((array[1]) <= (array[2])) {\n" +
-            "            fitness = Math.min(fitness, 6);\n" +
+            "            fitness = Math.min(fitness, 5);\n" +
             "            if ((array[2]) <= (array[3])) {\n" +
-            "                fitness = Math.min(fitness, 5);\n" +
+            "                fitness = Math.min(fitness, 4);\n" +
             "                if ((array[3]) <= (array[4])) {\n" +
-            "                    fitness = Math.min(fitness, 4);\n" +
+            "                    fitness = Math.min(fitness, 3);\n" +
             "                    sorted = true;\n" +
             "                    while (first <= last) {\n" +
-            "                        fitness = Math.min(fitness, 3);\n" +
+            "                        fitness = Math.min(fitness, 2);\n" +
             "                        // element found at index middle\n" +
-            "                        if ((array[middle]) < search) {\n" +
-            "                            fitness = Math.min(fitness, 2);\n" +
+            "                        if ((array[middle]) < search)\n" +
             "                            first = middle + 1;\n" +
-            "                        }// element found at index middle\n" +
+            "                        // element found at index middle\n" +
             "                        else {\n" +
             "                            fitness = Math.min(fitness, 1);\n" +
             "                            if ((array[middle]) == search) {\n" +
             "                                fitness = Math.min(fitness, 0);\n" +
             "                                return middle;\n" +
-            "                            }else {\n" +
-            "                                fitness = Math.min(fitness, 1);\n" +
+            "                            }else\n" +
             "                                last = middle - 1;\n" +
-            "                            }\n" +
+            "                            \n" +
             "                        }\n" +
             "                        middle = (first + last) / 2;\n" +
             "                    } \n" +
@@ -243,10 +238,9 @@ public class TestInstrumentor {
             "            }\n" +
             "        }\n" +
             "    }\n" +
-            "    if (!sorted) {\n" +
-            "        fitness = Math.min(fitness, 2);\n" +
+            "    if (!sorted)\n" +
             "        return -2;\n" +
-            "    }// array not sorted\n" +
+            "    // array not sorted\n" +
             "    \n" +
             "    return -1;// element not found\n" +
             "    \n" +

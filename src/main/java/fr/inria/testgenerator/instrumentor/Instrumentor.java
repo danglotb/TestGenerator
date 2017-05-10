@@ -2,13 +2,8 @@ package fr.inria.testgenerator.instrumentor;
 
 import spoon.Launcher;
 import spoon.reflect.code.*;
-import spoon.reflect.declaration.CtClass;
-import spoon.reflect.declaration.CtField;
-import spoon.reflect.declaration.CtMethod;
-import spoon.reflect.declaration.ModifierKind;
+import spoon.reflect.declaration.*;
 import spoon.reflect.visitor.filter.TypeFilter;
-
-import java.util.List;
 
 /**
  * Created by Benjamin DANGLOT
@@ -35,17 +30,16 @@ public class Instrumentor {
             throw new RuntimeException(e);
         }
 
-        final CtBlock targetBlock = targetStatement.getParent(CtBlock.class);
-        final List<CtBlock> blocks = method.getElements(new TypeFilter<>(CtBlock.class));
-        final int indexTargetBlock = blocks.indexOf(targetBlock);
-
-        blocks.forEach(ctBlock ->
-                ctBlock.insertBegin(
-                        method.getParent().getFactory().createCodeSnippetStatement(
-                                "fitness = Math.min(fitness, " + Math.abs(indexTargetBlock - blocks.indexOf(ctBlock)) + ")"
-                        )
-                )
-        );
+        CtElement currentParent = targetStatement;
+        int depth = 0;
+        while (! (currentParent instanceof CtMethod) ) {
+            if (currentParent instanceof CtBlock) {
+                ((CtBlock) currentParent).insertBegin(method.getParent().getFactory().createCodeSnippetStatement(
+                        "fitness = Math.min(fitness, " + depth++ + ")"
+                ));
+            }
+            currentParent = currentParent.getParent();
+        }
     }
 
     public static void insertFitnessField(CtClass<?> clazz) {
@@ -69,10 +63,7 @@ public class Instrumentor {
         launcher.addInputResource("docs/BinarySearch.java");
         launcher.buildModel();
 
-        final CtClass<Object> originalClass = launcher.getFactory().Class().get("eu.fbk.se.tcgen2.BinarySearch");
-        final CtClass<?> clazz = originalClass.clone();
-        clazz.setSimpleName(clazz.getSimpleName() + "_INSTR_43");
-        originalClass.getPackage().addType(clazz);
+        final CtClass<?> clazz = launcher.getFactory().Class().get("eu.fbk.se.tcgen2.BinarySearch");
         insertFitnessField(clazz);
         insertFitnessAssignement(43, clazz.getMethodsByName("search").get(0));//TODO we could parametized this, but w/e
 
