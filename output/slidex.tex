@@ -1,0 +1,251 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+%\usetheme{Madrid}
+\usetheme[sectionpage=progressbar, numbering=fraction]{metropolis}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+
+}
+
+% http://www-ljk.imag.fr/membres/Jerome.Lelong/latex/appendixnumberbeamer.sty
+% Reference: http://tex.stackexchange.com/questions/2541/beamer-frame-numbering-in-appendix
+\usepackage{appendixnumberbeamer}
+% Add total frame count to slides, optional. From Stefan,
+% http://www.latex-community.org/forum/viewtopic.php?f=4&t=2173
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+  \insertshorttitle\hfill\insertframenumber\,/\,\inserttotalframenumber}
+
+\makeatletter
+\newcommand{\srcsize}{\@setfontsize{\srcsize}{5pt}{5pt}}
+\makeatother
+
+\newcommand{\makesection}{%
+  \begin{frame}This is a slide.\end{frame}
+  \subsection{First Subsection}
+  \begin{frame}This is a slide.\end{frame}
+  \subsection{Second Subsection}
+  \begin{frame}This is a slide.\end{frame}
+}
+
+\usepackage{mathtools}
+\usepackage{tabularx}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+\usepackage{soul} % use this (many fancier options)
+
+\usepackage{listings}
+\lstset{
+  language=JAVA,
+  captionpos=b,
+  escapeinside={(*@}{@*)},
+  breaklines=true
+}
+
+\newcommand{\rot}[1]{\rotatebox{#1}}
+\usepackage{tabularx}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand*\rotvertical{\rotatebox{90}}
+\newcommand*\rotlarge{\rotatebox{70}}
+
+\newcommand{\Iampl}{\emph{I-Amplification}}
+\newcommand{\Aampl}{\emph{A-Amplification}}
+
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+\definecolor{ForestGreen}{rgb}{0.13,0.54,0.13}
+
+\usepackage{adjustbox}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Test Generation]{DSpot} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{Benjamin DANGLOT} % Your name
+\institute[INRIA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+\medskip
+\textit{} % Your email address
+}
+\date{12th, May 2017} % Date, can be changed to a custom date
+
+\begin{document}
+
+
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{Instrumentation}
+\begin{lstlisting}[basicstyle=\srcsize]
+public static void insertFitnessField(CtClass<?> clazz);
+public static void insertFitnessAssignement(int targetLine, CtMethod<?> method);
+\end{lstlisting}
+workflow:\\
+\begin{lstlisting}[basicstyle=\srcsize]
+        launcher.buildModel();
+        final CtClass<?> clazz = launcher.getFactory().Class().get("eu.fbk.se.tcgen2.BinarySearch");
+        insertFitnessField(clazz);
+        insertFitnessAssignement(43, clazz.getMethodsByName("search").get(0));
+        launcher.prettyprint();
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Hill Climbing Algorithm}
+3 Algorithms:
+    \begin{itemize}
+    \item HillClimbing Best: Take the best solution over the neighbors (6 potentials)
+    \item HillClimbing First: Take the first solution that improve the fitness
+    \item Random: generate new random solution and keep it if it better
+    \end{itemize}
+Neighbors:
+    \begin{itemize}
+    \item Random neighbor: replace one value by a random one.
+    \item Inc1Neighbors: +1 on one value of the vector solution.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Empirical results}
+\begin{center}
+\begin{tabular}{ll}
+HillClimbing Best Selection: &768 success\\
+HillClimbing First Selection: &806 success\\
+Random: &254 success\\
+\end{tabular}
+        \includegraphics[angle=-90,origin=c,scale=0.3]{boxplot_budgets.pdf}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Empirical results}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[scale=0.25]{success_f_budget.pdf}
+    \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[scale=0.25]{success_f_bound.pdf}
+    \end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Statistical Analysis}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+\end{column}
+\begin{column}{0.5\textwidth}
+
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Possible Improvement}
+
+\end{frame}
+
+\begin{frame}{Who I am}
+
+\end{frame}
+
+\end{document}

@@ -1,0 +1,29 @@
+slides:
+1 project
+Branch distance?
+Critize / comment the algo of the instrumentation
+
+2 answers to the RQ
+
+3 propose something more, idea by the course, relation with my phd
+
+
+fisher.test(rbind(HC,RD))
+
+	Fisher's Exact Test for Count Data
+
+data:  rbind(HC, RD)
+p-value < 2.2e-16
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+  7.798722 11.856348
+sample estimates:
+odds ratio
+  9.599409
+
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  budget$V2 by budget$V1
+W = 234970, p-value < 2.2e-16
+alternative hypothesis: true location shift is not equal to 0
