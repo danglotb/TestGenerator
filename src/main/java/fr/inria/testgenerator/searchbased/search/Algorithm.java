@@ -19,4 +19,6 @@ public abstract class Algorithm {
 
     public abstract Results run();
 
+    public abstract Results run(int[] initialSolution);
+
 }

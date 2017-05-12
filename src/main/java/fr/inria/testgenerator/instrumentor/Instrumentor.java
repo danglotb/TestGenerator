@@ -26,7 +26,6 @@ public class Instrumentor {
                 }
             }).get(0);
         } catch (Exception e) {
-            System.out.println("Could not find the target statement");
             throw new RuntimeException(e);
         }
 

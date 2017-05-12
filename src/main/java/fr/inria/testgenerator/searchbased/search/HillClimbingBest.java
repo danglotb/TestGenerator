@@ -4,6 +4,8 @@ import fr.inria.testgenerator.searchbased.support.Helper;
 import fr.inria.testgenerator.searchbased.support.Results;
 import fr.inria.testgenerator.searchbased.neighbors.NeighborsGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import static fr.inria.testgenerator.searchbased.support.Helper.BUDGET;
@@ -26,11 +28,19 @@ public class HillClimbingBest extends Algorithm {
 
     @Override
     public Results run() {
+        return run(Helper.initRandomSolution());
+    }
+
+    @Override
+    public Results run(int[] initialSolution) {
         int[] bestSolution = new int[6];
         int bestFitness = Integer.MAX_VALUE;
-        int[] currentSolution = Helper.initRandomSolution();
+        int[] currentSolution = new int[initialSolution.length];
+        System.arraycopy(initialSolution, 0, currentSolution, 0, initialSolution.length);
         int currentFitness = run.apply(currentSolution);
+        List<Integer> fitnessOverTheTime = new ArrayList<>();
         while (Helper.current_budget > 0 && currentFitness != 0) {
+            fitnessOverTheTime.add(currentFitness);
             final int[][] all = neighborsGenerator.getAll(currentSolution);
             int selectedSolution = -1;
             int selectedFitness = -1;
@@ -49,16 +59,10 @@ public class HillClimbingBest extends Algorithm {
                     System.arraycopy(currentSolution, 0, bestSolution, 0, currentSolution.length);
                     bestFitness = currentFitness;
                 }
-            } else {
-                if (bestFitness > currentFitness) {
-                    System.arraycopy(currentSolution, 0, bestSolution, 0, currentSolution.length);
-                    bestFitness = currentFitness;
-                }
-                currentSolution = Helper.initRandomSolution();
-                currentFitness = run.apply(currentSolution);
             }
         }
+        fitnessOverTheTime.add(currentFitness);
         int consumedBudget = current_budget == -1 ? BUDGET : BUDGET - current_budget;
-        return new Results(bestSolution, consumedBudget, bestFitness == 0);
+        return new Results(bestSolution, consumedBudget, bestFitness == 0, fitnessOverTheTime);
     }
 }

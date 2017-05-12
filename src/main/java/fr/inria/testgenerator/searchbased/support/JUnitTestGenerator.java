@@ -1,14 +1,15 @@
 package fr.inria.testgenerator.searchbased.support;
 
+import eu.fbk.se.tcgen2.BinarySearch;
 import fr.inria.testgenerator.searchbased.neighbors.NeighborsGenerator;
 import fr.inria.testgenerator.searchbased.neighbors.RandomNeighorsGenerator;
 import fr.inria.testgenerator.searchbased.search.Algorithm;
 import fr.inria.testgenerator.searchbased.search.HillClimbingBest;
 import org.junit.Test;
 import spoon.Launcher;
-import spoon.reflect.code.CtInvocation;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.ModifierKind;
 
 import static fr.inria.testgenerator.searchbased.support.Helper.BUDGET;
 import static fr.inria.testgenerator.searchbased.support.Helper.current_budget;
@@ -29,26 +30,28 @@ public class JUnitTestGenerator {
         launcher.buildModel();
 
         final CtClass<?> classUnderTest = launcher.getFactory().Class().get("eu.fbk.se.tcgen2.BinarySearch");
-        final CtMethod<?> search = classUnderTest
-                .getMethodsByName("search")
-                .get(0);
 
         final CtClass<?> classTest = launcher.getFactory().createClass();
         classTest.setSimpleName("TestBinarySearch");
         classUnderTest.getPackage().addType(classTest);
+        classTest.addModifier(ModifierKind.PUBLIC);
 
-        final CtMethod<?> testMethod_43 = launcher.getFactory().createMethod();
+        final CtMethod<Void> testMethod_43 = launcher.getFactory().createMethod();
         testMethod_43.setSimpleName("testBinarySearchOnMiddle");
+        testMethod_43.addModifier(ModifierKind.PUBLIC);
+        testMethod_43.setType(launcher.getFactory().Type().VOID_PRIMITIVE);
         testMethod_43.addAnnotation(launcher.getFactory().createAnnotation(
                 launcher.getFactory().Type().createReference(Test.class)
         ));
+        final int search = BinarySearch.search(Helper.int6toint5(results.inputTestData), results.inputTestData[5]);
         testMethod_43.setBody(
                 launcher.getFactory().createCodeSnippetStatement(
-                        "BinarySearch.search(" + results.inputTestDataToString() + ")")
+                        "org.junit.Assert.assertEquals(" + search + "," +
+                                "BinarySearch.search(" + results.inputTestDataToString() + "))")
         );
 
         classTest.addMethod(testMethod_43);
-        System.out.println(classTest);
+        launcher.prettyprint();
     }
 
     public static void main(String[] args) {
@@ -57,7 +60,7 @@ public class JUnitTestGenerator {
         Algorithm algorithm = new HillClimbingBest(Helper.run, neighborsGenerator);
         Results results = null;
         while (!success) {
-            results = algorithm.run();
+            results = algorithm.run(Helper.initRandomSolution());
             success = results.success;
             current_budget = BUDGET;
         }

@@ -2,11 +2,6 @@ package fr.inria.testgenerator.searchbased.support;
 
 import eu.fbk.se.tcgen2.BinarySearch;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Function;
@@ -33,32 +28,12 @@ public class Helper {
         return values;
     }
 
+
     public final static Function<int[], Integer> run = (solution) -> {
         BinarySearch.fitness = Integer.MAX_VALUE;
         BinarySearch.search(int6toint5(solution), solution[5]);
         Helper.current_budget--;
         return BinarySearch.fitness;
-    };
-
-    public final static Function<int[], Integer> runReflection = (solution) -> {
-        try {
-            URLClassLoader classLoader = new URLClassLoader(
-                    new URL[]{
-                            new File("spooned-classes/").toURI().toURL()
-                    }, ClassLoader.getSystemClassLoader()
-            );
-            int[] array = new int[solution.length - 1];
-            System.arraycopy(solution, 0, array, 0, array.length);
-            final Class<?> aClass = classLoader.loadClass("eu.fbk.se.tcgen2.BinarySearch");
-            final Object instance = aClass.newInstance();
-            final Method search = aClass.getMethod("search", int[].class, int.class);
-            search.invoke(instance, array, solution[solution.length - 1]);
-            final int fitness = (int) aClass.getField("fitness").get(instance);
-            aClass.getMethod("reset").invoke(aClass);
-            return fitness;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     };
 
     public static int[] initRandomSolution() {
