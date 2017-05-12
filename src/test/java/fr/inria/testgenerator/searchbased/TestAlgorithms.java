@@ -4,6 +4,7 @@ import fr.inria.testgenerator.searchbased.neighbors.NeighborsGenerator;
 import fr.inria.testgenerator.searchbased.neighbors.RandomNeighorsGenerator;
 import fr.inria.testgenerator.searchbased.search.Algorithm;
 import fr.inria.testgenerator.searchbased.search.HillClimbingBest;
+import fr.inria.testgenerator.searchbased.search.HillClimbingFirst;
 import fr.inria.testgenerator.searchbased.search.RandomAlgorithm;
 import fr.inria.testgenerator.searchbased.support.Helper;
 import fr.inria.testgenerator.searchbased.support.Results;
@@ -57,8 +58,20 @@ public class TestAlgorithms {
             totalBudgetConsumed += results.consumedFitnessEvaluation;
             current_budget = BUDGET;
         }
-        assertEquals(335, nbSuccess);
-        assertEquals("245.67", String.format("%.2f", ((double) totalBudgetConsumed / (double) nbTimeToRun)));
+        assertEquals(766, nbSuccess);
+        assertEquals("163.19", String.format("%.2f", ((double) totalBudgetConsumed / (double) nbTimeToRun)));
+
+        nbSuccess = 0;
+        totalBudgetConsumed = 0;
+        algorithm = new HillClimbingFirst(Helper.run, neighborsGenerator);
+        for (int i = 0; i < nbTimeToRun; i++) {
+            final Results results = algorithm.run(Helper.initRandomSolution());
+            nbSuccess += results.success ? 1 : 0;
+            totalBudgetConsumed += results.consumedFitnessEvaluation;
+            current_budget = BUDGET;
+        }
+        assertEquals(799, nbSuccess);
+        assertEquals("146.85", String.format("%.2f", ((double) totalBudgetConsumed / (double) nbTimeToRun)));
 
         nbSuccess = 0;
         totalBudgetConsumed = 0;
@@ -69,7 +82,7 @@ public class TestAlgorithms {
             totalBudgetConsumed += results.consumedFitnessEvaluation;
             current_budget = BUDGET;
         }
-        assertEquals(1, nbSuccess);
-        assertEquals("299.70", String.format("%.2f", ((double) totalBudgetConsumed / (double) nbTimeToRun)));
+        assertEquals(237, nbSuccess);
+        assertEquals("262.17", String.format("%.2f", ((double) totalBudgetConsumed / (double) nbTimeToRun)));
     }
 }
